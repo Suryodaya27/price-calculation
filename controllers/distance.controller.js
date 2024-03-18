@@ -1,17 +1,29 @@
 // dummy data
-const zoneBaseInfo = new Map([
-    ['Central', { baseDistanceInKm: 5, basePriceInEuros: 10.00 }],
-    ['North', { baseDistanceInKm: 6, basePriceInEuros: 12.00 }],
-    ['South', { baseDistanceInKm: 7, basePriceInEuros: 11.00 }],
-    ['East', { baseDistanceInKm: 8, basePriceInEuros: 13.00 }],
-    ['West', { baseDistanceInKm: 9, basePriceInEuros: 14.00 }]
-  ]);
+// const zoneBaseInfo = new Map([
+//     ['Central', { baseDistanceInKm: 5, basePriceInEuros: 10.00 }],
+//     ['North', { baseDistanceInKm: 6, basePriceInEuros: 12.00 }],
+//     ['South', { baseDistanceInKm: 7, basePriceInEuros: 11.00 }],
+//     ['East', { baseDistanceInKm: 8, basePriceInEuros: 13.00 }],
+//     ['West', { baseDistanceInKm: 9, basePriceInEuros: 14.00 }]
+//   ]);
+
+const { PrismaClient } = require('@prisma/client')
+const prisma = new PrismaClient()
 
 
 
-const calculatePrice = (item_type, zone, total_distance) => {
+const calculatePrice = async(item_type, zone, total_distance) => {
     try{
-        const baseInfo = zoneBaseInfo.get(zone);
+        console.log(item_type, zone, total_distance)
+        
+        const baseInfo = await prisma.newZone.findUnique({
+            where: {
+                zone: zone
+            }
+        })
+
+        console.log(baseInfo)
+        // const baseInfo = zoneBaseInfo.get(zone);
         if(!baseInfo) throw new Error("Invalid zone");
 
         const { baseDistanceInKm, basePriceInEuros } = baseInfo;

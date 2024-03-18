@@ -1,0 +1,23 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Zone {
+  id               Int      @id @default(autoincrement())
+  zone             String
+  baseDistanceInKm Int
+  basePriceInEuros Float
+  createdAt        DateTime @default(now())
+}
+
+model newZone{ 
+  zone             String  @id
+  baseDistanceInKm Int
+  basePriceInEuros Float
+  createdAt        DateTime @default(now())
+}
